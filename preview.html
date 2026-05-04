@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentLoanNext · Future Bank of India · v3 Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Inter","ui-sans-serif","system-ui"], mono:["JetBrains Mono","ui-monospace"] },
+          colors: {
+            electric: { 50:"#EBF1FF", 100:"#D6E2FF", 400:"#3D6CFF", 500:"#0047FF", 600:"#003BD6", 700:"#002CA6" },
+            teal:     { 50:"#E6FAF6", 400:"#33CFB7", 500:"#00BFA5", 600:"#00A48C", 700:"#008671" },
+            warm:     { 50:"#FAFAF9", 100:"#F5F5F4", 200:"#E7E5E4", 300:"#D6D3D1", 400:"#A8A29E", 500:"#78716C", 600:"#57534E", 700:"#44403C", 800:"#292524", 900:"#1C1917" },
+          },
+          keyframes: { pulseDot: { "0%,100%":{opacity:"0.3"},"50%":{opacity:"1"} } },
+          animation: { pulseDot: "pulseDot 1.4s ease-in-out infinite" }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; background:#FAFAF9; color:#1C1917; }
+    .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- ===================================================================== LOGIN -->
+<section id="view-login" class="min-h-screen grid lg:grid-cols-2 bg-warm-50">
+  <aside class="hidden lg:flex flex-col justify-between p-10 text-white bg-gradient-to-br from-electric-700 via-electric-600 to-teal-600 relative overflow-hidden">
+    <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 600 800" preserveAspectRatio="none">
+      <g stroke="white" stroke-width="1" fill="none">
+        <path d="M0 80 L240 80 L260 100 L420 100 L440 80 L600 80"/>
+        <path d="M0 200 L160 200 L180 220 L340 220 L360 200 L600 200"/>
+        <path d="M0 320 L280 320 L300 340 L500 340 L520 320 L600 320"/>
+        <circle cx="260" cy="100" r="3" fill="white"/>
+        <circle cx="440" cy="80" r="3" fill="white"/>
+      </g>
+    </svg>
+    <div class="relative">
+      <svg width="48" height="48" viewBox="0 0 64 64"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0047FF"/><stop offset="1" stop-color="#00BFA5"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#g1)"/><path d="M18 14h26v8H28v8h12v8H28v12h-10z" fill="white"/></svg>
+      <div class="mt-4">
+        <div class="text-3xl font-extrabold">Future Bank of India</div>
+        <div class="text-white/80 mt-1">Innovating the Indian Dream.</div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="text-[11px] uppercase tracking-widest text-white/70 mb-2">AgentLoanNext · v3 · Intelligence &amp; Security</div>
+      <h2 class="text-3xl font-extrabold leading-tight">RM Cockpit Sign-In</h2>
+      <p class="text-white/85 mt-2 max-w-md">Bank-staff portal with the Researcher agent, the AI Spotlight, and the gated Initiate workflow.</p>
+    </div>
+    <div class="relative text-[11px] text-white/60">© 2026 Future Bank of India · CoR N-13.02458 · asia-south1</div>
+  </aside>
+
+  <main class="flex items-center justify-center p-6 lg:p-12">
+    <div class="w-full max-w-md">
+      <div class="inline-flex items-center gap-2 bg-electric-50 text-electric-700 ring-1 ring-electric-500/20 px-3 py-1 rounded-full text-[11px] uppercase tracking-widest font-semibold mb-3">👤 Relationship Manager</div>
+      <h1 class="text-2xl font-extrabold text-warm-900">Sign in</h1>
+      <p class="text-sm text-warm-600 mt-1">Use your bank-issued staff ID. SSO via Cloud IAP in production.</p>
+      <form onsubmit="event.preventDefault(); doLogin();" class="mt-6 space-y-4">
+        <label class="block">
+          <span class="text-xs font-semibold uppercase tracking-widest text-warm-500">RM ID</span>
+          <input id="rm-id" placeholder="FBI2025" class="mt-1 w-full bg-white border border-warm-200 rounded-lg px-3 py-2.5 text-sm mono focus:outline-none focus:ring-2 focus:ring-electric-500/30"/>
+        </label>
+        <label class="block">
+          <span class="text-xs font-semibold uppercase tracking-widest text-warm-500">Password</span>
+          <input id="rm-pw" type="password" placeholder="••••••••" class="mt-1 w-full bg-white border border-warm-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-electric-500/30"/>
+        </label>
+        <div id="login-err" class="hidden rounded-lg bg-rose-50 border border-rose-200 text-rose-800 px-3 py-2 text-sm"></div>
+        <button class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold bg-electric-500 hover:bg-electric-600 text-white shadow-lg shadow-electric-500/30">Enter the Cockpit →</button>
+      </form>
+      <div class="mt-5 rounded-lg bg-warm-100 border border-warm-200 px-3 py-2 text-[11px] text-warm-600">
+        <div class="font-semibold uppercase tracking-widest text-warm-500 mb-1">Demo credential</div>
+        <div class="mono">FBI2025 / abc1234</div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ============================================================ HEADER + APP -->
+<div id="view-app" class="hidden flex-1 flex flex-col">
+  <header class="bg-white border-b border-warm-200 sticky top-0 z-30">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <svg width="36" height="36" viewBox="0 0 64 64"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0047FF"/><stop offset="1" stop-color="#00BFA5"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#g2)"/><path d="M18 14h26v8H28v8h12v8H28v12h-10z" fill="white"/></svg>
+        <div class="leading-tight">
+          <div class="font-extrabold text-warm-900 tracking-tight text-[15px]">Future Bank of India</div>
+          <div class="text-[10.5px] uppercase tracking-[0.18em] text-warm-500">Innovating the Indian Dream · AgentLoanNext</div>
+        </div>
+      </div>
+      <nav class="flex items-center gap-1 bg-warm-100 rounded-xl p-1">
+        <button data-view="cockpit" class="nav-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium bg-white text-electric-600 shadow ring-1 ring-warm-200">📊 Cockpit</button>
+        <button data-view="vault" class="nav-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium text-warm-600 hover:text-warm-900">🔒 Vault</button>
+      </nav>
+      <div class="flex items-center gap-2 text-xs text-warm-500">
+        <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulseDot"></span>
+        Anjali Krishnan · RM
+        <button onclick="logout()" class="ml-2 text-warm-500 hover:text-warm-900">↪ Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========== COCKPIT VIEW =========== -->
+  <main id="cockpit" class="flex-1 max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+
+    <nav class="flex items-center gap-2 text-xs text-warm-500 mb-4">
+      <button data-stage="portfolio" class="stage-btn px-2 py-1 rounded text-electric-600 font-semibold">Portfolio · God-View</button>
+      <span>›</span>
+      <button data-stage="research" class="stage-btn px-2 py-1 rounded hover:text-warm-800">Strategic Briefing</button>
+      <span>›</span>
+      <button data-stage="reasoning" class="stage-btn px-2 py-1 rounded hover:text-warm-800">Active Agentic Reasoning</button>
+      <span>›</span>
+      <button data-stage="kfs" class="stage-btn px-2 py-1 rounded hover:text-warm-800">KFS · Disbursal</button>
+    </nav>
+
+    <!-- PORTFOLIO STAGE -->
+    <section id="stage-portfolio" class="space-y-6">
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-white border border-warm-200 rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-electric-50 text-electric-600 flex items-center justify-center">🏢</div><div><div class="text-xl font-extrabold">4</div><div class="text-[11px] uppercase tracking-widest text-warm-500 mt-1">MSME clients</div></div></div>
+        <div class="bg-white border border-warm-200 rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">🧠</div><div><div class="text-xl font-extrabold">74</div><div class="text-[11px] uppercase tracking-widest text-warm-500 mt-1">Avg AI Lead Score</div></div></div>
+        <div class="bg-white border border-warm-200 rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-electric-50 text-electric-600 flex items-center justify-center">📈</div><div><div class="text-xl font-extrabold">₹59.7 Cr</div><div class="text-[11px] uppercase tracking-widest text-warm-500 mt-1">Total WC opportunity</div></div></div>
+        <div class="bg-white border border-warm-200 rounded-xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">🎯</div><div><div class="text-xl font-extrabold"><span id="researched-count">0</span> / 2</div><div class="text-[11px] uppercase tracking-widest text-warm-500 mt-1">Researched / Initiate-ready</div></div></div>
+      </section>
+
+      <!-- AI Spotlight -->
+      <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-electric-700 via-electric-600 to-teal-600 text-white shadow-xl shadow-electric-500/20">
+        <div class="relative p-6 lg:p-8 grid lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2">
+            <div class="inline-flex items-center gap-2 bg-white/15 rounded-full px-3 py-1 text-[11px] uppercase tracking-widest font-semibold mb-3">✨ AI Spotlight · LeadGen agent</div>
+            <h2 class="text-2xl lg:text-3xl font-extrabold tracking-tight mb-1">Vivid Electromech Limited</h2>
+            <div class="text-white/75 text-sm mb-4">NSE Emerge listed · Mumbai · MIDC Andheri · NIC 27109</div>
+            <p class="text-base lg:text-lg leading-relaxed text-white/95 mb-5 max-w-2xl">
+              <span class="font-semibold">AutoNavigator</span> detected a
+              <span class="font-bold text-teal-200">₹130 Cr IPO listing</span> and
+              <span class="font-bold text-teal-200">74% Sales Growth</span>.
+              <span class="font-semibold">AutoUnderwriter</span> identifies a
+              <span class="font-bold text-teal-200">₹36 Cr working-capital gap</span>.
+              Recommendation: <span class="font-bold">Initiate Loan Process.</span>
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="goStage('research')" class="inline-flex items-center gap-2.5 bg-white/15 hover:bg-white/25 ring-1 ring-white/30 text-white font-semibold text-sm px-4 py-2.5 rounded-xl">
+                🧠 <span id="research-cta-label">Research &amp; Analyze</span> →
+              </button>
+              <button id="initiate-btn" onclick="initiate()" disabled class="inline-flex items-center gap-2.5 font-bold text-base px-6 py-3 rounded-xl shadow-lg shadow-black/20 bg-white/30 text-white/70 cursor-not-allowed">
+                ⚡ Initiate (research first) →
+              </button>
+            </div>
+            <div id="initiate-locknote" class="mt-3 text-[11px] text-white/70 inline-flex items-center gap-1.5">🔒 Initiate is gated — complete a Researcher briefing to unlock.</div>
+          </div>
+          <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-5 self-start">
+            <div class="text-[11px] uppercase tracking-widest text-white/70 mb-3">AI Lead Score</div>
+            <div class="flex items-baseline gap-2"><span class="text-6xl font-black">96</span><span class="text-white/60 text-xl font-semibold">/100</span></div>
+            <div class="text-teal-200 font-bold text-sm mt-1 mb-4">STRATEGIC_PRIME</div>
+            <dl class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-white/10 rounded-lg px-3 py-2"><div class="font-bold text-base">₹155.29 Cr</div><div class="text-[10px] uppercase tracking-widest text-white/60 mt-0.5">FY26 Sales</div></div>
+              <div class="bg-white/10 rounded-lg px-3 py-2"><div class="font-bold text-base text-teal-200">74%</div><div class="text-[10px] uppercase tracking-widest text-white/60 mt-0.5">YoY Growth</div></div>
+              <div class="bg-white/10 rounded-lg px-3 py-2"><div class="font-bold text-base text-teal-200">63.9%</div><div class="text-[10px] uppercase tracking-widest text-white/60 mt-0.5">ROE</div></div>
+              <div class="bg-white/10 rounded-lg px-3 py-2"><div class="font-bold text-base">0.15</div><div class="text-[10px] uppercase tracking-widest text-white/60 mt-0.5">D/E</div></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio table -->
+      <section class="bg-white border border-warm-200 rounded-2xl overflow-hidden">
+        <div class="px-5 py-4 border-b border-warm-200">
+          <div class="font-bold text-warm-900">Portfolio · MSME clients</div>
+          <div class="text-xs text-warm-500">Click <strong>Research &amp; Analyze</strong> first — Initiate unlocks afterwards.</div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead><tr class="bg-warm-50 text-[11px] uppercase tracking-widest text-warm-500">
+              <th class="text-left px-5 py-3">Client</th>
+              <th class="text-left px-3 py-3">Industry</th>
+              <th class="text-right px-3 py-3">FY26 Sales</th>
+              <th class="text-right px-3 py-3">YoY</th>
+              <th class="text-right px-3 py-3">ROE</th>
+              <th class="text-right px-3 py-3">D/E</th>
+              <th class="text-right px-3 py-3">WC Gap</th>
+              <th class="text-center px-3 py-3">Score</th>
+              <th class="text-center px-3 py-3">Tier</th>
+              <th class="text-center px-3 py-3">Research</th>
+              <th class="text-center px-3 py-3">Action</th>
+            </tr></thead>
+            <tbody id="portfolio-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- RESEARCH STAGE -->
+    <section id="stage-research" class="hidden space-y-5">
+      <button onclick="goStage('portfolio')" class="text-xs text-warm-500 hover:text-warm-800">← Back to portfolio</button>
+      <header class="bg-gradient-to-br from-electric-700 to-teal-600 text-white rounded-2xl p-6 shadow-lg">
+        <div class="inline-flex items-center gap-2 bg-white/15 rounded-full px-3 py-1 text-[11px] uppercase tracking-widest font-semibold">🧠 Strategic Briefing · RM-only</div>
+        <h1 class="text-2xl lg:text-3xl font-extrabold mt-3" id="research-title">Vivid Electromech Limited</h1>
+        <p id="research-summary" class="text-white/95 mt-2 text-sm lg:text-base max-w-3xl"></p>
+      </header>
+
+      <section class="bg-white border border-warm-200 rounded-2xl overflow-hidden">
+        <div class="px-5 py-3 border-b border-warm-200 font-bold text-warm-900 text-sm">Risk vs Opportunity</div>
+        <div class="grid md:grid-cols-2 divide-x divide-warm-200">
+          <div class="p-5">
+            <div class="font-bold text-teal-700 mb-2 text-sm">📈 Opportunities</div>
+            <ul id="opps" class="space-y-2"></ul>
+          </div>
+          <div class="p-5">
+            <div class="font-bold text-rose-700 mb-2 text-sm">📉 Risks</div>
+            <ul id="risks" class="space-y-2"></ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid lg:grid-cols-3 gap-5">
+        <div class="bg-white border border-warm-200 rounded-2xl p-5">
+          <div class="font-bold text-warm-900 text-sm mb-3">📰 Recent News</div>
+          <ul id="news" class="space-y-2 text-sm text-warm-700"></ul>
+        </div>
+        <div class="bg-white border border-warm-200 rounded-2xl p-5">
+          <div class="font-bold text-warm-900 text-sm mb-3">🌐 Sector Outlook</div>
+          <p id="sector" class="text-sm text-warm-700 leading-relaxed"></p>
+        </div>
+        <div class="bg-white border border-warm-200 rounded-2xl p-5">
+          <div class="font-bold text-warm-900 text-sm mb-3">📊 Financial Snapshot</div>
+          <dl id="snapshot" class="space-y-1.5 text-sm"></dl>
+        </div>
+      </div>
+
+      <section class="bg-white border border-warm-200 rounded-2xl">
+        <div class="px-5 py-3 border-b border-warm-200 font-bold text-warm-900 text-sm">🛡 Red Flags</div>
+        <div class="px-5 py-4">
+          <ul id="redflags" class="space-y-2"></ul>
+        </div>
+      </section>
+
+      <section id="rec-card" class="rounded-2xl p-6 border-2"></section>
+    </section>
+
+    <!-- REASONING STAGE -->
+    <section id="stage-reasoning" class="hidden grid lg:grid-cols-3 gap-6">
+      <section class="lg:col-span-2 bg-white border border-warm-200 rounded-2xl">
+        <div class="px-5 py-4 border-b border-warm-200 flex items-center justify-between">
+          <div class="font-bold text-warm-900 text-sm">🧠 Active Agentic Reasoning · Deep Scan</div>
+          <span id="trace-status" class="text-xs text-electric-600">⟳ agents working...</span>
+        </div>
+        <div id="trace-stream" class="px-5 py-4 space-y-2 mono text-[12.5px] max-h-[68vh] overflow-y-auto"></div>
+        <div id="trace-cta" class="hidden px-5 pb-5">
+          <button onclick="goStage('kfs')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500 text-white text-sm font-semibold">Review KFS &amp; Compliance →</button>
+        </div>
+      </section>
+      <aside id="agent-rail" class="space-y-4"></aside>
+    </section>
+
+    <!-- KFS STAGE -->
+    <section id="stage-kfs" class="hidden grid lg:grid-cols-3 gap-6">
+      <section class="lg:col-span-2 bg-white border border-warm-200 rounded-2xl shadow-xl shadow-electric-500/5 overflow-hidden">
+        <div class="px-6 py-4 border-b border-warm-200 bg-gradient-to-r from-electric-50 via-white to-teal-50">
+          <div class="text-sm font-extrabold text-warm-900">KEY FACT STATEMENT</div>
+          <div class="text-[10px] uppercase tracking-widest text-warm-500">Future Bank of India · RBI-FPC-2026-v4-all-inclusive</div>
+        </div>
+        <div class="p-6 space-y-5 text-sm">
+          <div><div class="text-[10px] uppercase tracking-widest text-warm-500 font-bold mb-2">Loan terms</div>
+            <div class="space-y-1.5">
+              <div class="flex justify-between"><span class="text-warm-500 text-xs">Sanctioned amount</span><span class="text-base font-bold">₹36.00 Cr</span></div>
+              <div class="flex justify-between"><span class="text-warm-500 text-xs">Tenor</span><span>24 months</span></div>
+              <div class="flex justify-between"><span class="text-warm-500 text-xs">Interest rate</span><span>9.85% p.a. (FIXED)</span></div>
+              <div class="flex justify-between"><span class="text-warm-500 text-xs">Monthly EMI</span><span class="text-base font-bold">₹16,55,200</span></div>
+            </div>
+          </div>
+          <div class="rounded-xl bg-electric-500 text-white px-5 py-4 flex items-center justify-between shadow-md shadow-electric-500/20">
+            <div>
+              <div class="text-[11px] uppercase tracking-widest opacity-90 font-semibold">All-Inclusive APR</div>
+              <div class="text-[10px] opacity-75 mt-0.5">includes processing fee, GST, stamp, insurance</div>
+            </div>
+            <span class="text-4xl font-black">10.34%</span>
+          </div>
+          <div class="rounded-xl bg-teal-50 border border-teal-500/30 px-4 py-3 text-sm text-warm-800">
+            📅 <span class="font-semibold text-teal-700">Mandatory 3-day evaluation period</span><br>
+            You may withdraw from this loan, without any charge, until <span class="mono font-semibold" id="eval-window"></span>.
+          </div>
+          <div><div class="text-[10px] uppercase tracking-widest text-warm-500 font-bold mb-2">Compliance gate</div>
+            <ul class="space-y-1 text-[12px] text-warm-700">
+              <li>✅ research briefing reviewed</li>
+              <li>✅ kfs generated · apr all-inclusive · apr prominent</li>
+              <li>✅ evaluation period 3d · no dark patterns</li>
+              <li>✅ grievance officer listed · consent artefact valid</li>
+              <li>✅ listed entity disclosure ok (SEBI ICDR)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <aside class="bg-white border border-warm-200 rounded-2xl p-5 self-start">
+        <div class="text-[11px] uppercase tracking-widest text-warm-500 mb-1">Disbursal authorisation</div>
+        <div class="text-3xl font-extrabold text-warm-900">₹ 36,00,00,000</div>
+        <div class="text-xs text-warm-500 mt-1">Routed via <span class="font-semibold text-electric-600">RTGS</span> to <span class="mono text-teal-600">vivid.electromech@futurebank</span></div>
+        <label class="mt-5 flex items-start gap-2 text-xs text-warm-700"><input id="ack" type="checkbox" class="mt-0.5 accent-electric-500"/><span>Borrower has acknowledged the KFS via the MSME portal e-sign.</span></label>
+        <label class="mt-2 flex items-start gap-2 text-xs text-warm-700"><input id="evaldone" type="checkbox" class="mt-0.5 accent-electric-500"/><span>3-day evaluation period completed.</span></label>
+        <button id="disburse-btn" onclick="doDisburse()" disabled class="mt-4 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold bg-warm-200 text-warm-500 cursor-not-allowed">⚡ Authorise disbursal</button>
+        <div id="disburse-result" class="hidden mt-4 rounded-xl bg-teal-50 border border-teal-500/30 p-4">
+          <div class="text-teal-700 font-bold">✅ Disbursed successfully</div>
+          <div class="mt-2 text-xs text-warm-700"><span>Reference: <span class="mono text-teal-600" id="rail-ref"></span></span></div>
+        </div>
+      </aside>
+    </section>
+
+  </main>
+
+  <!-- =========== VAULT VIEW =========== -->
+  <main id="vault" class="hidden flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    <div class="rounded-2xl bg-warm-900 text-warm-50 p-6 mb-5">
+      <div class="inline-flex items-center gap-2 bg-white/10 rounded-full px-3 py-1 text-[11px] uppercase tracking-widest font-semibold mb-3">🔒 Admin Vault · /admin/vault</div>
+      <h1 class="text-2xl font-extrabold">Credential Reference</h1>
+      <p class="text-warm-200 text-sm mt-1">Hidden route for presentation use. Every render is audited.</p>
+    </div>
+
+    <section class="bg-white border border-warm-200 rounded-2xl overflow-hidden mb-5">
+      <div class="px-5 py-3 border-b border-warm-200 font-bold text-warm-900 text-sm">Bank-staff (RM)</div>
+      <div class="overflow-x-auto"><table class="w-full text-sm">
+        <thead><tr class="bg-warm-50 text-[11px] uppercase tracking-widest text-warm-500"><th class="text-left px-5 py-3">Display name</th><th class="text-left px-3 py-3">Title</th><th class="text-left px-3 py-3">RM ID</th><th class="text-left px-3 py-3">Password</th><th class="text-left px-3 py-3">Login URL</th></tr></thead>
+        <tbody><tr class="border-t border-warm-100"><td class="px-5 py-3 font-semibold">Anjali Krishnan</td><td class="px-3 py-3 text-warm-700 text-xs">RM · West Region</td><td class="px-3 py-3 mono">FBI2025</td><td class="px-3 py-3 mono">abc1234</td><td class="px-3 py-3 mono text-electric-600">/login/rm</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section class="bg-white border border-warm-200 rounded-2xl overflow-hidden">
+      <div class="px-5 py-3 border-b border-warm-200 font-bold text-warm-900 text-sm">MSME borrowers</div>
+      <div class="overflow-x-auto"><table class="w-full text-sm">
+        <thead><tr class="bg-warm-50 text-[11px] uppercase tracking-widest text-warm-500"><th class="text-left px-5 py-3">Company</th><th class="text-left px-3 py-3">Promoter</th><th class="text-left px-3 py-3">ID</th><th class="text-left px-3 py-3">Username</th><th class="text-left px-3 py-3">Password</th></tr></thead>
+        <tbody id="vault-customers"></tbody>
+      </table></div>
+    </section>
+  </main>
+
+  <footer class="border-t border-warm-200 bg-white py-4 text-center text-[11px] text-warm-500">
+    Future Bank of India · CoR <span class="mono">N-13.02458</span> · Built on Antigravity · India Stack 2026
+  </footer>
+</div>
+
+<script>
+  // ---------- Data ----------
+  const PORTFOLIO = [
+    {id:"VIV", name:"Vivid Electromech",     industry:"Industrial Electromech",      city:"Mumbai",    sales:155.29, yoy:74.0, roe:63.9, de:0.15, gap:36.0, score:96, tier:"STRATEGIC_PRIME", rec:"INITIATE",  spotlight:true},
+    {id:"SUR", name:"Surya Solars",          industry:"Renewable Energy / Solar EPC", city:"Bengaluru", sales:88.50,  yoy:38.0, roe:24.4, de:0.42, gap:12.0, score:81, tier:"PRIME",            rec:"INITIATE",  spotlight:false},
+    {id:"ARZ", name:"Arzo Tech",             industry:"Auto-Component Manufacturing", city:"Pune",      sales:42.10,  yoy:11.4, roe:16.2, de:0.78, gap:4.5,  score:67, tier:"NEAR_PRIME",       rec:"MONITOR",   spotlight:false},
+    {id:"BLU", name:"Blue Ocean Logistics",  industry:"Cold-Chain Logistics",         city:"Kochi",     sales:31.80,  yoy:6.1,  roe:9.8,  de:1.10, gap:7.2,  score:52, tier:"REVIEW",           rec:"FOLLOW_UP", spotlight:false},
+  ];
+  const CUSTOMERS = [
+    {co:"Vivid Electromech Limited",   prom:"Suresh R. Mehta",   id:"VIV", u:"vivid_user", p:"vivid2026"},
+    {co:"Surya Solars Pvt Ltd",        prom:"Aarav Subramanian", id:"SUR", u:"surya_user", p:"surya2026"},
+    {co:"Arzo Tech Industries Pvt Ltd",prom:"Meera Joshi",       id:"ARZ", u:"arzo_user",  p:"arzo2026"},
+    {co:"Blue Ocean Logistics Pvt Ltd",prom:"Thomas Varghese",   id:"BLU", u:"blue_user",  p:"blue2026"},
+  ];
+
+  const BRIEFINGS = {
+    VIV: {
+      summary: "Vivid Electromech is a high-conviction lead. Post-IPO momentum, anchor-buyer diversification, and disciplined leverage point to a clean STRATEGIC_PRIME underwrite. Recommend Initiate.",
+      opps: ["₹130 Cr IPO oversubscribed 27.4× signals strong investor confidence.","74% YoY growth backed by ₹89 Cr order book.","ROE 63.9% with low leverage — new debt is highly accretive."],
+      risks:["Receivables days 64 — heavy concentration in PSU buyers.","MIDC lease renewal due 2031 — covenant required.","Khopoli capex execution risk."],
+      news: ["IPO oversubscribed 27.4× on NSE Emerge","BHEL ₹38 Cr 5-year supply contract","Industry projected 12% CAGR through 2030","Board resolution: ₹50 Cr WC facility authorised"],
+      sector:"Electric motors & generators in structural growth: PLI extended 2025, rural electrification, renewables capex are tailwinds.",
+      snap: [["Market cap","₹294.0 Cr"],["Current price","₹196"],["Issue price","₹142"],["30-day move","+38%"],["Peer P/E","24.6x"],["Vivid P/E","13.8x"]],
+      red: [],
+      verdict:"PROCEED_TO_INITIATE",
+      rationale:"Strong financial profile, clean compliance, board resolution in place. Initiate ₹36 Cr WC line at STRATEGIC_PRIME."
+    },
+    SUR: { summary:"Credible PRIME lead. Strong execution but DISCOM payment discipline and customer concentration are watch items.", opps:["Won 80MW Karnataka DISCOM EPC — ₹140 Cr pipeline","Module prices declining 8-12% YoY"], risks:["DISCOM receivables historically slow","D/E 0.42 already includes equipment financing"], news:["Karnataka DISCOM 80MW PPA","MNRE ALMM list expanded","India solar EPC TAM ~₹1.2 lakh Cr by 2030"], sector:"Solar EPC expanding aggressively post 500GW-by-2030 mandate.", snap:[["Market cap","—"],["Peer P/E","22.3x"]], red:["Receivables aging > 90 days at 32% — covenant required"], verdict:"PROCEED_TO_INITIATE", rationale:"Underwrite PRIME tier; insist on receivables-backed structure." },
+    ARZ: { summary:"NEAR_PRIME lead. Stable filings but exposed to Tier-2 OEMs whose EV transition is compressing ICE auto-component demand.", opps:["Loyal Tier-2 OEM relationships (15+ years)","Filings hygiene clean"], risks:["EV transition shrinks ICE-component TAM","D/E 0.78 already elevated"], news:["Pune auto-cluster Q1 -6%","Bosch India to phase out ICE injectors by 2028"], sector:"ICE auto-components in structural decline. EV pivot needed within 18 months.", snap:[["Peer P/E","16.8x"]], red:["Top 3 buyers = 71% of revenue"], verdict:"DEFER", rationale:"Schedule strategic review on EV transition before extending limit." },
+    BLU: { summary:"REVIEW lead. Diesel-cost squeeze and one GSTR-3B late filing suggest underlying cash strain.", opps:["Cold-chain TAM growing 14% CAGR"], risks:["Diesel-linked cost base","D/E 1.10 over covenant","Late GSTR-3B filing"], news:["Diesel +9% in Q1","GST Council clarifies cold-chain ITC"], sector:"Cold-chain attractive long-term but margin-constrained near-term.", snap:[["Peer P/E","14.2x"]], red:["GSTR-3B late filing (Jan 2026) — request explanation","Covenant waiver request likely"], verdict:"DEFER", rationale:"Trigger relationship-call workflow; do not Initiate." },
+  };
+
+  let researched = new Set();
+  let currentResearchId = "VIV";
+
+  // ---------- Login ----------
+  function doLogin() {
+    const id = document.getElementById("rm-id").value.trim();
+    const pw = document.getElementById("rm-pw").value;
+    if (id === "FBI2025" && pw === "abc1234") {
+      document.getElementById("view-login").classList.add("hidden");
+      document.getElementById("view-app").classList.remove("hidden");
+      document.getElementById("view-app").classList.add("flex");
+      renderPortfolio();
+      renderVault();
+    } else {
+      const e = document.getElementById("login-err");
+      e.textContent = "Invalid RM credentials. Demo login: FBI2025 / abc1234.";
+      e.classList.remove("hidden");
+    }
+  }
+  function logout() {
+    document.getElementById("view-app").classList.add("hidden");
+    document.getElementById("view-app").classList.remove("flex");
+    document.getElementById("view-login").classList.remove("hidden");
+  }
+
+  // ---------- Nav ----------
+  document.querySelectorAll(".nav-btn").forEach(b => b.addEventListener("click", () => {
+    const v = b.dataset.view;
+    document.getElementById("cockpit").classList.toggle("hidden", v !== "cockpit");
+    document.getElementById("vault").classList.toggle("hidden", v !== "vault");
+    document.querySelectorAll(".nav-btn").forEach(x => {
+      const a = x.dataset.view === v;
+      x.classList.toggle("bg-white", a); x.classList.toggle("text-electric-600", a);
+      x.classList.toggle("shadow", a); x.classList.toggle("ring-1", a); x.classList.toggle("ring-warm-200", a);
+      x.classList.toggle("text-warm-600", !a);
+    });
+  }));
+  function goStage(s) {
+    ["portfolio","research","reasoning","kfs"].forEach(x =>
+      document.getElementById("stage-"+x).classList.toggle("hidden", x!==s));
+    document.querySelectorAll(".stage-btn").forEach(b => {
+      const a = b.dataset.stage === s;
+      b.classList.toggle("text-electric-600", a); b.classList.toggle("font-semibold", a);
+      b.classList.toggle("hover:text-warm-800", !a);
+    });
+    if (s==="research") renderBriefing(currentResearchId);
+    if (s==="kfs") populateKFS();
+  }
+  document.querySelectorAll(".stage-btn").forEach(b => b.addEventListener("click", () => goStage(b.dataset.stage)));
+
+  // ---------- Portfolio render ----------
+  const TIER = { STRATEGIC_PRIME:"bg-electric-50 text-electric-700 ring-electric-500/30", PRIME:"bg-teal-50 text-teal-700 ring-teal-500/30", NEAR_PRIME:"bg-amber-50 text-amber-700 ring-amber-500/30", REVIEW:"bg-warm-200 text-warm-700 ring-warm-400/40" };
+  const REC = { INITIATE:{label:"Initiate", cls:"bg-electric-500 text-white"}, MONITOR:{label:"Monitor", cls:"bg-warm-200 text-warm-700"}, FOLLOW_UP:{label:"Follow-up", cls:"bg-amber-100 text-amber-700"} };
+  function tone(s){ return s>=90?"text-electric-600": s>=75?"text-teal-600": s>=60?"text-amber-600":"text-warm-500"; }
+
+  function renderPortfolio() {
+    document.getElementById("portfolio-rows").innerHTML = PORTFOLIO.map(c => {
+      const r = researched.has(c.id);
+      const canInit = c.spotlight && r;
+      return `<tr class="border-t border-warm-100 ${c.spotlight?'bg-electric-50/30':''} hover:bg-warm-50/60">
+        <td class="px-5 py-3"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-gradient-to-br from-electric-500 to-teal-500 flex items-center justify-center text-white text-[11px] font-bold">${c.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</div><div class="leading-tight"><div class="font-semibold">${c.name}${c.spotlight?' <span class="ml-1 text-[10px] uppercase tracking-widest text-electric-600">✨ spotlight</span>':''}</div><div class="text-[11px] text-warm-500 mono">${c.id} · ${c.city}</div></div></div></td>
+        <td class="px-3 py-3 text-warm-700 text-xs">${c.industry}</td>
+        <td class="px-3 py-3 text-right font-semibold">₹${c.sales.toFixed(2)} Cr</td>
+        <td class="px-3 py-3 text-right">${c.yoy}%</td>
+        <td class="px-3 py-3 text-right">${c.roe}%</td>
+        <td class="px-3 py-3 text-right">${c.de}</td>
+        <td class="px-3 py-3 text-right mono">₹${c.gap.toFixed(1)} Cr</td>
+        <td class="px-3 py-3 text-center"><span class="text-lg font-extrabold ${tone(c.score)}">${c.score}</span></td>
+        <td class="px-3 py-3 text-center"><span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-md ring-1 ${TIER[c.tier]}">${c.tier.replace(/_/g,' ')}</span></td>
+        <td class="px-3 py-3 text-center"><button onclick="openResearch('${c.id}')" class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md ${r?'bg-teal-50 text-teal-700 ring-1 ring-teal-500/30':'bg-electric-500 text-white hover:bg-electric-600'}">${r?'✓ Researched':'🧠 Research & Analyze'}</button></td>
+        <td class="px-3 py-3 text-center">${c.spotlight
+          ? `<button onclick="${canInit?'initiate()':''}" ${canInit?'':'disabled'} class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md ${canInit?'bg-electric-500 text-white hover:bg-electric-600':'bg-warm-200 text-warm-500 cursor-not-allowed'}">⚡ Initiate</button>`
+          : `<span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md ${REC[c.rec].cls}">${REC[c.rec].label}</span>`
+        }</td>
+      </tr>`;
+    }).join('');
+    document.getElementById("researched-count").textContent = researched.size;
+  }
+
+  function renderVault() {
+    document.getElementById("vault-customers").innerHTML = CUSTOMERS.map(c => `
+      <tr class="border-t border-warm-100"><td class="px-5 py-3 font-semibold">${c.co}</td><td class="px-3 py-3 text-warm-700 text-xs">${c.prom}</td><td class="px-3 py-3"><span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 ring-1 ring-teal-500/30">${c.id}</span></td><td class="px-3 py-3 mono">${c.u}</td><td class="px-3 py-3 mono">${c.p}</td></tr>
+    `).join('');
+  }
+
+  // ---------- Research stage ----------
+  function openResearch(id) { currentResearchId = id; goStage("research"); }
+  function renderBriefing(id) {
+    const b = BRIEFINGS[id];
+    const co = PORTFOLIO.find(c => c.id===id);
+    document.getElementById("research-title").textContent = co.name + " Limited";
+    document.getElementById("research-summary").textContent = b.summary;
+    document.getElementById("opps").innerHTML = b.opps.map(o => `<li class="text-sm rounded-lg border bg-teal-50 text-teal-800 border-teal-200 px-3 py-2">${o}</li>`).join('');
+    document.getElementById("risks").innerHTML = b.risks.map(o => `<li class="text-sm rounded-lg border bg-rose-50 text-rose-800 border-rose-200 px-3 py-2">${o}</li>`).join('');
+    document.getElementById("news").innerHTML = b.news.map(n => `<li class="flex gap-2"><span class="text-electric-500">↗</span>${n}</li>`).join('');
+    document.getElementById("sector").textContent = b.sector;
+    document.getElementById("snapshot").innerHTML = b.snap.map(([k,v]) => `<div class="flex justify-between"><dt class="text-warm-500">${k}</dt><dd class="font-semibold">${v}</dd></div>`).join('');
+    const red = document.getElementById("redflags");
+    red.innerHTML = b.red.length===0
+      ? `<div class="text-sm text-teal-700 font-semibold">No material red flags identified.</div>`
+      : b.red.map(r => `<li class="text-sm rounded-lg border bg-amber-50 text-amber-800 border-amber-200 px-3 py-2">⚠ ${r}</li>`).join('');
+    const isOK = b.verdict === "PROCEED_TO_INITIATE";
+    document.getElementById("rec-card").className = `rounded-2xl p-6 border-2 ${isOK?'bg-electric-50 border-electric-500':'bg-amber-50 border-amber-300'}`;
+    document.getElementById("rec-card").innerHTML = `
+      <div class="flex items-start gap-3">
+        <div class="text-2xl">${isOK?'✅':'⚠'}</div>
+        <div class="flex-1">
+          <div class="text-[11px] uppercase tracking-widest font-semibold text-warm-600 mb-1">Researcher recommendation</div>
+          <div class="text-2xl font-extrabold ${isOK?'text-electric-700':'text-amber-700'}">${b.verdict.replace(/_/g,' ')}</div>
+          <p class="text-warm-800 mt-1.5 text-sm">${b.rationale}</p>
+        </div>
+        <button onclick="markResearched('${id}')" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-base shadow-lg ${isOK?'bg-electric-500 text-white shadow-electric-500/30':'bg-amber-500 text-white shadow-amber-500/30'}">✨ Select for Loan Initiation →</button>
+      </div>`;
+  }
+  function markResearched(id) {
+    researched.add(id);
+    if (id === "VIV") {
+      const btn = document.getElementById("initiate-btn");
+      btn.disabled = false;
+      btn.className = "inline-flex items-center gap-2.5 font-bold text-base px-6 py-3 rounded-xl shadow-lg shadow-black/20 bg-white text-electric-700 hover:bg-warm-50";
+      btn.innerHTML = "⚡ Initiate Loan Process →";
+      document.getElementById("initiate-locknote").classList.add("hidden");
+      document.getElementById("research-cta-label").textContent = "Re-open Strategic Briefing";
+    }
+    renderPortfolio();
+    goStage("portfolio");
+  }
+
+  // ---------- Reasoning ----------
+  const FRAMES = [
+    ["LeadGen","Spotlight pre-armed: Vivid Electromech · 96/100.","amber"],
+    ["Researcher","Strategic Briefing reviewed by RM: PROCEED_TO_INITIATE.","electric"],
+    ["RM","Anjali Krishnan clicked [Initiate Loan Process] for VIVIDEM.","warm"],
+    ["AutoNavigator","RM-led intent captured: working_capital_post_ipo · ₹36 Cr · 24m.","teal"],
+    ["AutoUnderwriter","Standby → ACTIVE. Beginning deep-rail validation.","electric"],
+    ["AutoUnderwriter","NSE Emerge: ₹130 Cr (27.4× subscribed); WC facility ₹50 Cr authorised.","electric"],
+    ["AutoUnderwriter","GSTN: FY26 ₹155.29 Cr · YoY 74% · hygiene 96/100.","electric"],
+    ["AutoUnderwriter","AA: avg inflow ₹12.42 Cr · CoV 0.13.","electric"],
+    ["AutoUnderwriter","ULI: 3 parcels (₹13.55 Cr FMV) + 3 unencumbered machinery.","electric"],
+    ["AutoUnderwriter","Composite scorecard → tier=STRATEGIC_PRIME, rate 9.85%.","electric"],
+    ["ComplianceNext","RBI 2026 + SEBI ICDR gates engaged.","emerald"],
+    ["ComplianceNext","All checks PASS · APR (all-inclusive) 10.34% · 3-day window armed.","emerald"],
+    ["AutoNavigator","KFS dispatched to MSME portal.","teal"],
+  ];
+  const TONE = { amber:"bg-amber-50 text-amber-700 ring-amber-500/30", warm:"bg-warm-200 text-warm-800 ring-warm-400/40", teal:"bg-teal-50 text-teal-700 ring-teal-500/30", electric:"bg-electric-50 text-electric-700 ring-electric-500/30", emerald:"bg-emerald-50 text-emerald-700 ring-emerald-500/30" };
+  function renderRail() {
+    document.getElementById("agent-rail").innerHTML = `
+      ${["LeadGen","Researcher","AutoNavigator","AutoUnderwriter","ComplianceNext"].map(n => `
+      <div class="bg-white border border-warm-200 rounded-2xl p-4">
+        <div class="font-semibold text-warm-900 text-sm">${n}</div>
+        <div class="text-xs text-warm-500 mt-1">agent</div>
+      </div>`).join('')}`;
+  }
+  function initiate() {
+    if (!researched.has("VIV")) return;
+    goStage("reasoning"); renderRail();
+    const stream = document.getElementById("trace-stream"); stream.innerHTML = "";
+    document.getElementById("reasoning-status"); // noop placeholder
+    document.getElementById("trace-cta").classList.add("hidden");
+    let i = 0;
+    const tick = () => {
+      if (i >= FRAMES.length) {
+        document.getElementById("trace-status").innerHTML = '<span class="text-teal-600 font-semibold">✓ scan complete</span>';
+        document.getElementById("trace-cta").classList.remove("hidden");
+        return;
+      }
+      const [agent, msg, t] = FRAMES[i++];
+      const ts = new Date().toISOString().substring(11,19);
+      const row = document.createElement("div");
+      row.className = "flex items-start gap-3 py-1.5 border-b border-warm-100";
+      row.innerHTML = `<span class="text-warm-400 text-[11px] mt-0.5 w-16 flex-shrink-0">${ts}</span><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider ring-1 flex-shrink-0 ${TONE[t]}">${agent}</span><span class="text-warm-800">${msg}</span>`;
+      stream.appendChild(row);
+      stream.scrollTop = stream.scrollHeight;
+      setTimeout(tick, 460);
+    };
+    tick();
+  }
+
+  // ---------- KFS / Disburse ----------
+  function populateKFS() {
+    document.getElementById("eval-window").textContent = new Date(Date.now()+3*86400*1000).toLocaleString("en-IN");
+  }
+  function syncDisburse() {
+    const ok = document.getElementById("ack").checked && document.getElementById("evaldone").checked;
+    const btn = document.getElementById("disburse-btn");
+    btn.disabled = !ok;
+    btn.className = ok
+      ? "mt-4 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold bg-electric-500 hover:bg-electric-600 text-white shadow-lg shadow-electric-500/30"
+      : "mt-4 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold bg-warm-200 text-warm-500 cursor-not-allowed";
+  }
+  document.getElementById("ack").addEventListener("change", syncDisburse);
+  document.getElementById("evaldone").addEventListener("change", syncDisburse);
+  function doDisburse() {
+    document.getElementById("disburse-result").classList.remove("hidden");
+    document.getElementById("rail-ref").textContent = "RTGS" + Math.floor(Math.random()*1e12);
+  }
+</script>
+</body>
+</html>

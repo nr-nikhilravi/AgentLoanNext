@@ -1,0 +1,76 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: autoloannext # Change this to your Google Cloud Project ID
+  REGION: asia-south1
+  SERVICE_NAME: agentloannext
+  REPO_NAME: fbi-agentloannext-images
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Add "id-token" with the intended permissions for Workload Identity Federation
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # Replace with your actual Workload Identity Provider string
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-actions@autoloannext.iam.gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker to use Artifact Registry
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Build and Push Docker image
+        run: |-
+          IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          flags: >-
+            --allow-unauthenticated
+            --port=8080
+            --memory=1Gi
+            --cpu=2
+            --concurrency=80
+            --min-instances=0
+            --max-instances=1
+            --service-account=379092222910-compute@developer.gserviceaccount.com
+          env_vars: |-
+            STATIC_DIR=/app/static
+            APP_OPERATOR=Future Bank of India
+            DEPLOY_REGION=${{ env.REGION }}
+            APP_ENV=production
+            FBI_RM_ID=FBI2025
+            FBI_ADMIN_ID=FBI_ADMIN
+            ALLOW_ADMIN_VAULT=true
+            GEMINI_MODEL=gemini-flash-latest
+          secrets: |-
+            GEMINI_API_KEY=fbi-gemini-api-key:latest
+            SESSION_SECRET=fbi-session-secret:latest
+            FBI_RM_PASSWORD=fbi-rm-password:latest
+            FBI_ADMIN_PASSWORD=fbi-admin-password:latest

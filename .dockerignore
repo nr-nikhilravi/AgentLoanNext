@@ -1,0 +1,14 @@
+**/node_modules
+**/dist
+**/__pycache__
+**/.pytest_cache
+**/.venv
+**/.env
+**/.env.local
+.git
+.gitignore
+*.md
+!README.md
+.agents/**/*.draft
+*.log
+.DS_Store
